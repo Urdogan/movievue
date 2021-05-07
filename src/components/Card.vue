@@ -5,9 +5,9 @@
     >  
       <v-img
         height="250"
-        src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
+        src="https://m.media-amazon.com/images/M/MV5BNzQxNTIyODAxMV5BMl5BanBnXkFtZTgwNzQyMDA3OTE@._V1_UY1200_CR90,0,630,1200_AL_.jpg    "
       ></v-img>
-      <v-card-title>Film Adı</v-card-title>
+      <v-card-title>Moonlight</v-card-title>
       <v-card-text>
         <v-row
           align="center"
@@ -28,38 +28,31 @@
         </v-row>
   
         <div class="my-4 subtitle-1">
-          $ • Italian, Cafe
+          Barry Jenkins
         </div>
   
-        <div>Small plates, salads & sandwiches - an intimate setting with 12 indoor seats plus patio seating.</div>
+        <div>açıklama</div>
       </v-card-text>
   
       <v-divider class="mx-4"></v-divider>
   
-      <v-card-title>Tonight's availability</v-card-title>
+      <v-card-title></v-card-title>
   
       <v-card-text>
         <v-chip-group
           v-model="selection"
           active-class="deep-purple accent-4 white--text"
-          column
         >
-          <v-chip>5:30PM</v-chip>
-  
-          <v-chip>7:30PM</v-chip>
-  
-          <v-chip>8:00PM</v-chip>
-  
-          <v-chip>9:00PM</v-chip>
+          <v-chip>1</v-chip>
+          <v-chip>2</v-chip>
+          <v-chip>3</v-chip>
+          <v-chip>4</v-chip>
+          <v-chip>5</v-chip>
         </v-chip-group>
       </v-card-text>
   
       <v-card-actions>
-        <v-btn
-          color="deep-purple lighten-2"
-        >
-          Reserve
-        </v-btn>
+
       </v-card-actions>
     </v-card>
 </template>
