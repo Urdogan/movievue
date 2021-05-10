@@ -1,6 +1,5 @@
 import firebase from 'firebase';
 import 'firebase/firestore';
-import Vue from 'vue';
 
 
 var firebaseConfig = {
@@ -16,3 +15,21 @@ var firebaseConfig = {
  
 
   export const db =  firebase.initializeApp(firebaseConfig).firestore();
+  const Movies = db.collection('movies');
+  
+  export const addMovie = movie => {
+    return Movies.add(movie);
+  }
+
+  export const getMovie = async imdbID => {
+    const movie = await Movies.doc(imdbID).get()
+    return movie.exists ? movie.data() : null;
+  }
+
+  export const updateMovie = (imdbID,movie) => {    
+    return Movies.doc(imdbID).update(movie);
+  }
+
+  export const deleteMovie = imdbID => {
+    return Movies.doc(imdbID).delete();
+  }

@@ -1,10 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
+    <v-app-bar app color="primary" dark>
       <div class="d-flex align-center">
         <v-img
           alt="Vuetify Logo"
@@ -14,7 +10,6 @@
           transition="scale-transition"
           width="40"
         />
-    
         <v-img
           alt="Vuetify Name"
           class="shrink mt-1 hidden-sm-and-down"
@@ -24,7 +19,6 @@
           width="100"
         />
       </div>
-
       <v-spacer></v-spacer>
 
       <v-btn
@@ -36,38 +30,47 @@
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
     </v-app-bar>
-
-    <v-main>
-      <div class="row">
-        <div class="col-4">
-              <Card/>
-      </div>
-      <div class="col-4">
-              <Card/>
-      </div>
-      <div class="col-4">
-              <Card/>
-      </div>
-      </div>
-
-
-
-    </v-main>
+    <v-content>
+      <v-container>
+        <div class="row">
+          <div v-for="movie in Movies" :key="movie.id">
+            <Card :message="message" :movie="movie" />
+          </div>
+        </div>
+      </v-container>
+    </v-content>
   </v-app>
 </template>
 
 <script>
-import Card from './components/Card';
-
+import { db } from "./firebase/db";
+import Card from "./components/Card";
 export default {
-  name: 'App',
-
-  components: {
-    Card
+  name: "App",
+  components: { Card },
+  data() {
+    return {
+      Movies: [],
+      message: "",
+    };
   },
-
-  data: () => ({
-    //
-  }),
+  firestore: {
+    Movies: db.collection("movies"),
+  },
+  methods: {
+    fetchSomeData() {
+      fetch(
+        "https://api.themoviedb.org/3/movie/tt1070874?api_key=d9247919665601a302fac23a05b3ab36",
+        {
+          method: "GET",
+        }
+      )
+        .then((response) => response.json())
+        .then((json) => (this.message = json));
+    },
+  },
+  created() {
+    this.fetchSomeData();
+  },
 };
 </script>
