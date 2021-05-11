@@ -1,40 +1,18 @@
 <template>
-  <v-col>
-    <v-card class="ma-4 text-center" max-height="145" max-width="200">
+  <v-col sm="12">
+    <v-card class="ma-4 text-center" max-width="200px" max-height="400px">
       <v-img
-        v-bind:src="'https://image.tmdb.org/t/p/w500/' + message.poster_path"
+        height="300"
+        width="200px"
+        v-bind:src="'https://image.tmdb.org/t/p/w200/' + detail.poster_path"
       ></v-img>
       <v-card-title>{{ movie.title }}</v-card-title>
-      <v-card-title>{{ message.imdb_id }}</v-card-title>
-      <v-card-text>
-        <v-row align="center" class="mx-0">
-          <v-rating
-            :value="4.5"
-            color="amber"
-            dense
-            half-increments
-            readonly
-            size="14"
-          ></v-rating>
-          <div class="grey--text ml-4">
-            4.5 (413)
-          </div>
-        </v-row>
-        <div class="my-1 subtitle-1">
-          Barry Jenkins
-        </div>
-      </v-card-text>
-
+      <v-card-title>{{ detail.poster_path }}</v-card-title>
       <v-divider class="mx-4"></v-divider>
-
       <v-card-title></v-card-title>
-
       <v-card-text>
-        <v-chip-group
-          v-model="selection"
-          active-class="deep-purple accent-4 white--text"
-        >
-          <v-chip>{{ message.adult }}</v-chip>
+        <v-chip-group active-class="deep-purple accent-4 white--text">
+          <v-chip>1</v-chip>
           <v-chip>2</v-chip>
           <v-chip>3</v-chip>
           <v-chip>4</v-chip>
@@ -47,6 +25,26 @@
 <script>
 export default {
   name: "Card",
-  props: ["movie", "message"],
+  props: ["movie"],
+  data() {
+    return { detail: "" };
+  },
+  methods: {
+    fetchSomeData(imdbID) {
+      fetch(
+        "https://api.themoviedb.org/3/movie/" +
+          imdbID +
+          "?api_key=d9247919665601a302fac23a05b3ab36"
+      )
+        .then((res) => res.json())
+        .then((res2) => {
+          this.detail = res2;
+        });
+    },
+  },
+
+  created() {
+    this.fetchSomeData(this.movie.imdbID);
+  },
 };
 </script>

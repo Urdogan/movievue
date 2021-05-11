@@ -32,11 +32,11 @@
     </v-app-bar>
     <v-content>
       <v-container>
-        <div class="row">
-          <div v-for="movie in Movies" :key="movie.id">
-            <Card :message="message" :movie="movie" />
+        <v-row class="mb-4">
+          <div v-for="movie in Filmler" :key="movie.imdbID">
+            <Card :movie="movie" />
           </div>
-        </div>
+        </v-row>
       </v-container>
     </v-content>
   </v-app>
@@ -45,32 +45,33 @@
 <script>
 import { db } from "./firebase/db";
 import Card from "./components/Card";
+import Filmler from "./assets/filmler.json";
 export default {
   name: "App",
   components: { Card },
   data() {
     return {
       Movies: [],
-      message: "",
+      Filmler,
     };
   },
   firestore: {
     Movies: db.collection("movies"),
   },
   methods: {
-    fetchSomeData() {
+    /*fetchSomeData() {
       fetch(
-        "https://api.themoviedb.org/3/movie/tt1070874?api_key=d9247919665601a302fac23a05b3ab36",
+        "https://api.themoviedb.org/3/movie/tt8267604?api_key=d9247919665601a302fac23a05b3ab36",
         {
           method: "GET",
         }
       )
         .then((response) => response.json())
         .then((json) => (this.message = json));
-    },
+    },*/
   },
   created() {
-    this.fetchSomeData();
+    //this.fetchSomeData();
   },
 };
 </script>
