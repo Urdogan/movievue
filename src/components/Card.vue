@@ -4,33 +4,30 @@
       <v-img
         height="300"
         width="200px"
-        v-bind:src="'https://image.tmdb.org/t/p/w200/' + detail.poster_path"
+        v-bind:src="'https://image.tmdb.org/t/p/w200/' + movie.poster"
       ></v-img>
       <v-card-title>{{ movie.title }}</v-card-title>
-      <v-card-title>{{ detail.poster_path }}</v-card-title>
+      <v-card-title></v-card-title>
+
       <v-divider class="mx-4"></v-divider>
       <v-card-title></v-card-title>
       <v-card-text>
-        <v-chip-group active-class="deep-purple accent-4 white--text">
-          <v-chip>1</v-chip>
-          <v-chip>2</v-chip>
-          <v-chip>3</v-chip>
-          <v-chip>4</v-chip>
-          <v-chip>5</v-chip>
-        </v-chip-group>
+        <div>{{ movie.runtime }}</div>
       </v-card-text>
     </v-card>
   </v-col>
 </template>
 <script>
+import { db } from "../firebase/db";
 export default {
   name: "Card",
   props: ["movie"],
   data() {
-    return { detail: "" };
+    return { detail: [], dbMovie: [] };
   },
+
   methods: {
-    fetchSomeData(imdbID) {
+    postWithPoster(imdbID) {
       fetch(
         "https://api.themoviedb.org/3/movie/" +
           imdbID +
@@ -39,12 +36,32 @@ export default {
         .then((res) => res.json())
         .then((res2) => {
           this.detail = res2;
+          const film = {
+            title: res2.title,
+            imdbID: imdbID,
+            year: this.movie.year,
+            vote: this.movie.vote,
+            rating: this.movie.rating,
+            director: this.movie.director,
+            watched: this.movie.isWatched,
+            exist: this.movie.isExist,
+            posted: this.movie.isPosted,
+            singleCaptured: this.movie.isCaptured,
+            fourCaptured: "KO",
+            gifCaptured: "KO",
+            note: "",
+            description: res2.overview,
+            runtime: res2.runtime,
+            poster: res2.poster_path,
+          };
+          db.collection("movies").add(film);
         });
     },
   },
-
   created() {
-    this.fetchSomeData(this.movie.imdbID);
+    if (this.movie.poster == null) {
+      this.postWithPoster(this.movie.imdbID);
+    }
   },
 };
 </script>

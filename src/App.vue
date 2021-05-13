@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark>
+    <v-app-bar app color="white" dark>
       <div class="d-flex align-center">
         <v-img
           alt="Vuetify Logo"
@@ -33,7 +33,7 @@
     <v-content>
       <v-container>
         <v-row class="mb-4">
-          <div v-for="movie in Filmler" :key="movie.imdbID">
+          <div v-for="movie in Movies" :key="movie.imdbID">
             <Card :movie="movie" />
           </div>
         </v-row>
