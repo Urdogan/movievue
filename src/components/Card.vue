@@ -12,7 +12,7 @@
       <v-divider class="mx-4"></v-divider>
       <v-card-title></v-card-title>
       <v-card-text>
-        <div>{{ movie.runtime }}</div>
+        <div></div>
       </v-card-text>
     </v-card>
   </v-col>
@@ -23,7 +23,7 @@ export default {
   name: "Card",
   props: ["movie"],
   data() {
-    return { detail: [], dbMovie: [] };
+    return { detail: [] };
   },
 
   methods: {

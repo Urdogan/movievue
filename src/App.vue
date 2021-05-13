@@ -45,14 +45,14 @@
 <script>
 import { db } from "./firebase/db";
 import Card from "./components/Card";
-import Filmler from "./assets/filmler.json";
+//import Filmler from "./assets/filmler.json";
 export default {
   name: "App",
   components: { Card },
   data() {
     return {
       Movies: [],
-      Filmler,
+      //Filmler,
     };
   },
   firestore: {
