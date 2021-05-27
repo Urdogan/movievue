@@ -6,11 +6,12 @@
         width="200px"
         v-bind:src="'https://image.tmdb.org/t/p/w200/' + movie.poster"
       ></v-img>
-      <v-card-title>{{ movie.title }}</v-card-title>
+      <v-card-title wrap>{{ movie.title }}</v-card-title>
       <v-card-title></v-card-title>
-
       <v-divider class="mx-4"></v-divider>
       <v-card-title></v-card-title>
+      <card-action>
+</card-action>
       <v-card-text>
         <div></div>
       </v-card-text>
