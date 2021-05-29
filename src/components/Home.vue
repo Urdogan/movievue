@@ -4,11 +4,16 @@
       <v-row class="search-wrapper justify-center">
         <input type="text" v-model="search" placeholder="Search title.." />
       </v-row>
-      <v-row>
-        <Tweet id="1393534501419200514"></Tweet>
-      </v-row>
+
       <v-row class="search-wrapper justify-center">
         <v-pagination :length="pageLength" v-model="page"></v-pagination>
+      </v-row>
+      <v-row class="search-wrapper justify-center">
+        <v-checkbox v-model="izlenen" label="izlenen"></v-checkbox>
+        <v-checkbox v-model="normalSS" label="normalSS"></v-checkbox>
+        <v-checkbox v-model="gif" label="gif"></v-checkbox>
+        <v-checkbox v-model="dörtlü" label="dörtlü"></v-checkbox>
+        <v-checkbox v-model="exist" label="var mı?"></v-checkbox>
       </v-row>
 
       <v-row class="d-flex justify-space-between ma-6">
@@ -17,7 +22,7 @@
             <v-flex xs5>
               <v-img
                 max-height="500"
-                width="350"
+                max-width="300"
                 v-bind:src="'https://image.tmdb.org/t/p/w300/' + movie.poster"
               ></v-img>
             </v-flex>
@@ -49,12 +54,11 @@
 
 <script>
 import { db } from "../firebase/db";
-import { Tweet } from "vue-tweet-embed";
 //import Detail from "./components/Detail";
 //import Filmler from "./assets/filmler.json";
 export default {
   name: "App",
-  components: { Tweet },
+  components: {},
   data() {
     return {
       Movies: [],
@@ -62,6 +66,11 @@ export default {
       pageLength: 5,
       detail: [],
       search: "",
+      izlenen: true,
+      gif: true,
+      dörtlü: true,
+      normalSS: true,
+      exist: true,
       //Filmler,
     };
   },
@@ -69,13 +78,28 @@ export default {
     Movies: db
       .collection("movies")
       .orderBy("title")
-      .limit(130),
+      .limit(300),
   },
   computed: {
     filteredList() {
       return this.Movies.filter((movie) => {
         return movie.title.toLowerCase().includes(this.search.toLowerCase());
-      });
+      })
+        .filter((filtered) => {
+          return filtered.watched.includes(this.izlenen ? "OK" : "KO");
+        })
+        .filter((filtered) => {
+          return filtered.fourCaptured.includes(this.dörtlü ? "OK" : "KO");
+        })
+        .filter((filtered) => {
+          return filtered.singleCaptured.includes(this.normalSS ? "OK" : "KO");
+        })
+        .filter((filtered) => {
+          return filtered.gifCaptured.includes(this.gif ? "OK" : "KO");
+        })
+        .filter((filtered) => {
+          return filtered.exist.includes(this.exist ? "OK" : "");
+        });
     },
   },
   methods: {
