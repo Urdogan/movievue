@@ -1,12 +1,12 @@
 <template>
   <div>
     <v-container>
-      <v-row class="search-wrapper justify-center">
+      <v-row class="search-wrapper justify-center ma-6">
         <input type="text" v-model="search" placeholder="Search title.." />
       </v-row>
 
       <v-row class="search-wrapper justify-center">
-        <v-pagination :length="pageLength" v-model="page"></v-pagination>
+        <v-pagination :length="pages" v-model="page"></v-pagination>
       </v-row>
       <v-row class="search-wrapper justify-center">
         <v-checkbox v-model="izlenen" label="izlenen"></v-checkbox>
@@ -62,23 +62,23 @@ export default {
   data() {
     return {
       Movies: [],
-      page: 1,
-      pageLength: 5,
       detail: [],
       search: "",
       izlenen: true,
-      gif: true,
-      dörtlü: true,
-      normalSS: true,
-      exist: true,
+      gif: false,
+      dörtlü: false,
+      normalSS: false,
+      exist: false,
+      total: 0,
+      pages: 0,
+      perPage: 24,
+      page: 1,
       //Filmler,
     };
   },
   firestore: {
-    Movies: db
-      .collection("movies")
-      .orderBy("title")
-      .limit(300),
+    Movies: db.collection("movies").orderBy("title"),
+    //.limit(300),
   },
   computed: {
     filteredList() {
@@ -133,11 +133,34 @@ export default {
           db.collection("movies").add(film);
         });
     },
+    list() {
+      return this.Movies.filter((movie) => {
+        return movie.title.toLowerCase().includes(this.search.toLowerCase());
+      })
+        .filter((filtered) => {
+          return filtered.watched.includes(this.izlenen ? "OK" : "KO");
+        })
+        .filter((filtered) => {
+          return filtered.fourCaptured.includes(this.dörtlü ? "OK" : "KO");
+        })
+        .filter((filtered) => {
+          return filtered.singleCaptured.includes(this.normalSS ? "OK" : "KO");
+        })
+        .filter((filtered) => {
+          return filtered.gifCaptured.includes(this.gif ? "OK" : "KO");
+        })
+        .filter((filtered) => {
+          this.total = filtered.exist.includes(this.exist ? "OK" : "").size;
+          this.pages = Math.ceil(this.total / this.perPage);
+          return filtered.exist.includes(this.exist ? "OK" : "");
+        });
+    },
     goBack() {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");
     },
   },
   created() {
+    this.list();
     if (this.movie.poster == null) {
       this.postWithPoster(this.movie.imdbID);
     }
